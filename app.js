@@ -27,6 +27,10 @@ app.use(express.urlencoded({extended: true}));
 app.use('/calendar', calendarController)
 app.use(task)
 
+app.get('/', (req, res)=> {
+    res.send("I'm home!")
+});
+
 app.get('/calendar', (req, res)=> {
     res.send("I'm calendar!")
 });
