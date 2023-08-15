@@ -162,82 +162,19 @@ const filterMovieData=(searchText,movieList)=>{
 
 function NavbarMUI({setMovieList,movieList,filterMovieList,setfilterMovieList,mode,setMode}) {
   const[searchText,setSearchText]=useState("")
-  console.log(filterMovieList)
-  console.log("mode is",mode)
   const handleSearchChange=(e)=>{
     const value=e.target.value
     setSearchText(value)
-    console.log(searchText)
     //handleSearchBlur()
   }
 
   const handleSearchBlur=()=>{
-    console.log(1)
-    //filter out the data from the array
     const data=filterMovieData(searchText,movieList)
-    console.log(data)
-    //update the data=> movielist
-    // setMovieList(data)=>1 search
+
     setfilterMovieList(data)
     }
 const navigate=useNavigate()
-  return (
-    <Box sx={{ display: 'flex',marginBottom:"5%" }}>
-      <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            WebApp-Movies-B47 
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/')
-              }}
-              >Home</Button>
-
-<Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/addmovie')
-              }}
-              >AddMovie</Button>
-         
-
-          <Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/colorgame')
-              }}
-              >Colorgame</Button>
-         
-
-          <Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/propdrilling')
-              }}
-              >PropDrilling</Button>
-         
-
-          <Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/themecontext')
-              }}
-              >useContext</Button>
-
-              <Button sx={{ color: '#fff' }}
-              onClick={()=>{setMode(mode==="light"?"dark":"light")}}
-              >{mode==="light"?"dark Mode":"light Mode"}</Button>
-
-<Button sx={{ color: '#fff' }}
-              onClick={()=>{
-                navigate('/tictactoe')
-              }}
-              >TicTacToe</Button>
-          </Box>
-          
+  return (        
         {/* serach functionality added */}
           <Search>
             <SearchIconWrapper>

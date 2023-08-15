@@ -60,7 +60,7 @@ router.post('/login', async (req, res) => {
 
         token = await loginDetails.generateAuthToken();
 
-        res.cookie("mern", token, {
+        res.cookie("token", token, {
             expires : new Date((Date.now()) + 86400000),
             httpOnly : true
         })

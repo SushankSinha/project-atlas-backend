@@ -18,9 +18,9 @@ router.get('/task', async (req, res) => {
 // Route to get one Task
 
 router.get('/task/:id', async (req, res) => {
-  const id = req.params._id;
+  const id = req.params.id;
   try {
-    const task = await Task.findOne(id);
+    const task = await Task.findOne({_id:id});
     res.send(task);
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving Tasks' });
@@ -31,7 +31,7 @@ router.get('/task/:id', async (req, res) => {
 
 router.post('/task/add-task', async (req, res) => {
 
-  const {title, content, user} = req.body;
+  const {title, content, user, status} = req.body;
 
   if(!title || !content || !user){
       res.status(422).json({error : "Fill the required fields"})
@@ -39,11 +39,11 @@ router.post('/task/add-task', async (req, res) => {
 
   try {
               
-          const taskDetails = new Task({title, content, user});
+          const taskDetails = new Task({title, content, user, status});
 
           await taskDetails.save();            
           
-          res.status(201).json({message : "Task Saved!"})
+          res.status(201).json({message : "Task Saved!", taskDetails})
       
           } catch(err){
       console.log(err)
@@ -53,16 +53,12 @@ router.post('/task/add-task', async (req, res) => {
 
 router.put('/task/edit/:id', async (req, res) => {
 
-  const id = req.params._id;
+  const id = req.params.id;
 
-  const {title, content, user} = req.body;
-
-  if(!title || !content || !user){
-      res.status(400).json({error : "Fill the required fields"})
-  }else{
+  const {title, content, user, status, completion} = req.body;
 
     try {
-      const updatedTask = await Task.findByIdAndUpdate(id, { title, content, user}, { new: true });
+      const updatedTask = await Task.findByIdAndUpdate({_id:id}, { title, content, user, status, completion}, { new: true });
       res.status(201).json({message : "Task Updated!", task: updatedTask});
       if (!updatedTask) {
         return res.status(404).json({ message: "Task not found" });
@@ -70,14 +66,13 @@ router.put('/task/edit/:id', async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error updating Task', error });
     }
-}
 });
 
 router.delete('/task/delete/:id', async (req, res) => {
-  const id  = req.params._id;
+  const id  = req.params.id;
 
   try {
-    await Task.findByIdAndDelete(id)
+    await Task.findByIdAndDelete({_id:id})
     res.status(204).json({ message: 'Task deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting Task', error });
