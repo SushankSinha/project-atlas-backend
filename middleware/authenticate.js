@@ -6,10 +6,7 @@ const authenticate = (req, res, next) => {
         jwt.verify(token, process.env.SECRET_KEY);
         next();
 
-    }catch(err){
-        res.status(401).send('Unauthorized')
-        res.send({message : err})
-    }
+    }catch(err){res.send({message : err})}
 }
 
 export default authenticate;

@@ -77,24 +77,24 @@ router.post('/login', async (req, res) => {
 
 
 router.get('/', authenticate, (req, res)=> {
-    res.status(200).json({message : "Login successful"})
+    res.send({message : "Login successful"})
 });
 router.get('/calendar', authenticate, (req, res)=> {
-    res.status(200).json({message : "Authorized"})
+    res.send({message : "Authorized"})
 });
 router.get('/dashboard', authenticate, (req, res)=> {
-    res.status(200).json({message : "Authorized"})
+    res.send({message : "Authorized"})
 });
 router.get('/logs', authenticate, (req, res)=> {
-    res.status(200).json({message : "Authorized"})
+    res.send({message : "Authorized"})
 });
 router.get('/charts', authenticate, (req, res)=> {
-    res.status(200).json({message : "Authorized"})
+    res.send({message : "Authorized"})
 });
 
 router.get('/logout', (req, res)=> {
     res.clearCookie('token', {path: '/login'})
-    res.status(200).send("User Logged out")
+    res.send("User Logged out")
 })
 
 export default router;
