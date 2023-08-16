@@ -82,7 +82,19 @@ router.post('/login', async (req, res) => {
 
 
 router.get('/', authenticate, (req, res)=> {
-    res.send(req.rootUser)
+    res.status(200).json({message : "Login successful"})
+});
+router.get('/calendar', authenticate, (req, res)=> {
+    res.status(200).json({message : "Authorized"})
+});
+router.get('/dashboard', authenticate, (req, res)=> {
+    res.status(200).json({message : "Authorized"})
+});
+router.get('/logs', authenticate, (req, res)=> {
+    res.status(200).json({message : "Authorized"})
+});
+router.get('/charts', authenticate, (req, res)=> {
+    res.status(200).json({message : "Authorized"})
 });
 
 router.get('/logout', (req, res)=> {
