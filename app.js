@@ -41,7 +41,7 @@ app.get('/task', (req, res)=> {
 
 app.get('/login', (req, res)=> {
     res.send("I am Login")
-    res.set('Access-Control-Allow-origin', 'http://localhost:3000')
+    res.set('Access-Control-Allow-origin', 'https://atlas-tool.netlify.app/')
 });
 app.get('/register', (req, res)=> {
     res.send("I'm register!")
