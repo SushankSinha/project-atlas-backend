@@ -58,12 +58,12 @@ router.post('/login', async (req, res) => {
             
         const isMatch = await bcrypt.compare(password, loginDetails.password);
 
-        const token = jwt.sign({ id: loginDetails._id }, process.env.SECRET_KEY);
+        // const token = jwt.sign({ id: loginDetails._id }, process.env.SECRET_KEY);
 
         if(!isMatch){
             res.status(400).json({error : "Invalid Credentials"})
         }else {
-            res.send({ message: "Successfully Logged In", token: token });
+            res.send({ message: "Successfully Logged In"});
         }
         } else {
             res.status(400).json({error : "Invalid Credentials"})
@@ -78,18 +78,6 @@ router.post('/login', async (req, res) => {
 
 router.get('/', authenticate, (req, res)=> {
     res.send({message : "Login successful"})
-});
-router.get('/calendar', authenticate, (req, res)=> {
-    res.send({message : "Authorized"})
-});
-router.get('/dashboard', authenticate, (req, res)=> {
-    res.send({message : "Authorized"})
-});
-router.get('/logs', authenticate, (req, res)=> {
-    res.send({message : "Authorized"})
-});
-router.get('/charts', authenticate, (req, res)=> {
-    res.send({message : "Authorized"})
 });
 
 router.get('/logout', (req, res)=> {

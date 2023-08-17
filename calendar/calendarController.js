@@ -3,7 +3,7 @@ import Event from './Event.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/calendar', async (req, res) => {
 
     try {
       const event = await Event.find();
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     }
   });
 
-    router.get('/:id', async (req, res) => {
+    router.get('/calendar/:id', async (req, res) => {
     const id  = req.params.id;
   
     try {
@@ -24,13 +24,13 @@ router.get('/', async (req, res) => {
     }
   });
 
-router.post('/add-event', async(req, res)=>{
+router.post('/calendar/add-event', async(req, res)=>{
     const event = Event(req.body)
     await event.save();
-    res.sendStatus(201);
+    res.send({message: 'Event Created'});
 })
 
-router.put('/edit-event/:id', async (req, res) => {
+router.put('/calendar/edit-event/:id', async (req, res) => {
 
     const id = req.params.id;
 
@@ -51,7 +51,7 @@ router.put('/edit-event/:id', async (req, res) => {
       }
   });
 
-  router.delete('/delete/:id', async (req, res) => {
+  router.delete('/calendar/delete/:id', async (req, res) => {
     const id  = req.params.id;
   
     try {
