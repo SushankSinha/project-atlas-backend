@@ -31,7 +31,7 @@ router.get('/task/:id', async (req, res) => {
 
 router.post('/task/add-task', async (req, res) => {
 
-  const {title, content, user, status} = req.body;
+  const {title, content, user, status, completion} = req.body;
 
   if(!title || !content || !user){
       res.status(422).json({error : "Fill the required fields"})
@@ -39,7 +39,7 @@ router.post('/task/add-task', async (req, res) => {
 
   try {
               
-          const taskDetails = new Task({title, content, user, status});
+          const taskDetails = new Task({title, content, user, status, completion});
 
           await taskDetails.save();            
           

@@ -3,7 +3,7 @@ const router = express.Router();
 import bcrypt from 'bcryptjs'
 import User from '../models/userSchema.js'
 import cookieParser from 'cookie-parser'
-import authenticate from '../middleware/authenticate.js';
+// import authenticate from '../middleware/authenticate.js';
 import jwt from 'jsonwebtoken';
 
 router.use(cookieParser())
@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.get('/', authenticate, (req, res)=> {
+router.get('/', (req, res)=> {
     res.send({message : "Login successful"})
 });
 
