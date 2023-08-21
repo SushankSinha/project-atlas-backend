@@ -3,7 +3,7 @@ const router = express.Router();
 import bcrypt from 'bcryptjs'
 import User from '../models/userSchema.js'
 import cookieParser from 'cookie-parser'
-// import authenticate from '../middleware/authenticate.js';
+import authenticate from '../middleware/authenticate.js';
 import jwt from 'jsonwebtoken';
 
 router.use(cookieParser())
@@ -58,12 +58,12 @@ router.post('/login', async (req, res) => {
             
         const isMatch = await bcrypt.compare(password, loginDetails.password);
 
-        // const token = jwt.sign({ id: loginDetails._id }, process.env.SECRET_KEY);
+        const token = jwt.sign({ id: loginDetails._id }, process.env.SECRET_KEY);
 
         if(!isMatch){
             res.status(400).json({error : "Invalid Credentials"})
         }else {
-            res.send({ message: "Successfully Logged In"});
+            res.send({ message: "Successfully Logged In", token : token });
         }
         } else {
             res.status(400).json({error : "Invalid Credentials"})
@@ -76,8 +76,20 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.get('/', (req, res)=> {
+router.get('/', authenticate, (req, res)=> {
     res.send({message : "Login successful"})
+});
+router.get('/dashboard', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/charts', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/logs', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/calendar', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
 });
 
 router.get('/logout', (req, res)=> {

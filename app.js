@@ -34,6 +34,15 @@ app.get('/', (req, res)=> {
 app.get('/calendar', (req, res)=> {
     res.send("I'm calendar!")
 });
+app.get('/charts', (req, res)=> {
+    res.send("I'm charts!")
+});
+app.get('/logs', (req, res)=> {
+    res.send("I'm logs!")
+});
+app.get('/dashboard', (req, res)=> {
+    res.send("I'm dashboard!")
+});
 
 app.get('/task', (req, res)=> {
     res.send("I'm task!")
@@ -41,7 +50,7 @@ app.get('/task', (req, res)=> {
 
 app.get('/login', (req, res)=> {
     res.send("I am Login")
-    // res.set('Access-Control-Allow-origin', 'https://atlas-tool.netlify.app/')
+    res.set('Access-Control-Allow-origin', 'https://atlas-tool.netlify.app/')
 });
 app.get('/register', (req, res)=> {
     res.send("I'm register!")
