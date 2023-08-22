@@ -19,9 +19,14 @@ mongoose.connect(dataBase, {useUnifiedTopology : true,
     console.log ("Mongoose connection started")
 }).catch((err)=> console.log("Mongoose connection refused", err))
 
-
 app.use(express.json());
-app.use(cors())
+app.use(
+    cors({
+      origin: ["https://atlas-tool.netlify.app"],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    })
+  );
 app.use(auth);
 app.use(express.urlencoded({extended: true}));
 app.use(calendarController)
@@ -50,7 +55,6 @@ app.get('/task', (req, res)=> {
 
 app.get('/login', (req, res)=> {
     res.send("I am Login")
-    res.set('Access-Control-Allow-origin', 'https://atlas-tool.netlify.app/')
 });
 app.get('/register', (req, res)=> {
     res.send("I'm register!")

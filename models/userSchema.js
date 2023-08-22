@@ -40,17 +40,6 @@ userSchema.pre('save', async function (next){
     next();
 })
 
-userSchema.methods.generateAuthToken = async function(){
-    try {
-        let token = jwt.sign({_id : this._id}, process.env.SECRET_KEY);
-        this.tokens = this.tokens.concat({token : token})
-        await this.save();
-        return token;
-    } catch (err) {
-        console.log(err)
-    }
-}
-
 const User = mongoose.model('USER', userSchema);
 
 export default User

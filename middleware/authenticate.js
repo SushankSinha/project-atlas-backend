@@ -1,12 +1,23 @@
+import User from '../models/userSchema.js';
+import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken';
 
-const authenticate = (req, res, next) => {
-    try{
-        const token = req.header('x-auth-token');
-        jwt.verify(token, process.env.SECRET_KEY);
-        next();
+dotenv.config({path : './.env'});
 
-    }catch(err){res.send({message : err})}
+const authenticate = (req, res) => {
+  const token = req.cookies.token
+  if (!token) {
+    return res.json({ status: false })
+  }
+  jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
+    if (err) {
+     return res.json({ status: false })
+    } else {
+      const user = await User.findById(data.id)
+      if (user) return res.json({ status: true, user: user.username })
+      else return res.json({ status: false })
+    }
+  })
 }
 
 export default authenticate;
