@@ -6,8 +6,6 @@ import cookieParser from 'cookie-parser'
 import authenticate from '../middleware/authenticate.js';
 import secretToken from '../utils/secretToken.js'
 
-router.use(cookieParser())
-
 router.post('/register', async (req, res) => {
 
     const {name, email, type, password, cnfPassword} = req.body;
@@ -77,21 +75,11 @@ router.post('/login', async (req, res, next) => {
 });
 
 
-router.post('/', authenticate, (req, res)=> {
-    res.send({message : "Login successful"})
-});
-router.post('/dashboard', authenticate, (req, res)=> {
-    res.send({message : "authorised"})
-});
-router.post('/charts', authenticate, (req, res)=> {
-    res.send({message : "authorised"})
-});
-router.post('/logs', authenticate, (req, res)=> {
-    res.send({message : "authorised"})
-});
-router.post('/calendar', authenticate, (req, res)=> {
-    res.send({message : "authorised"})
-});
+router.post('/', authenticate);
+router.post('/dashboard', authenticate);
+router.post('/charts', authenticate);
+router.post('/logs', authenticate);
+router.post('/calendar', authenticate);
 
 router.post('/logout', (req, res)=> {
     res.clearCookie('token', {path: '/login'})
