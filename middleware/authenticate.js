@@ -1,22 +1,18 @@
-import User from '../models/userSchema.js';
 import dotenv from 'dotenv';
 dotenv.config({path : './.env'});
 import jwt from 'jsonwebtoken';
 
-const authenticate = (req, res) => {
-  const token = req.cookies.token
-  if (!token) {
-    return res.json({ status: false })
-  }
-  jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
-    if (err) {
-     return res.json({ status: false })
-    } else {
-      const user = await User.findById(data._id)
-      if (user) return res.json({ status: true, user: user.name })
-      else return res.json({ status: false })
+const authenticate = (req, res, next) => {
+    try {
+        const token = req.header("x-auth-token");
+        if (!token) return res.status(403).send("Access denied.");
+
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(400).send("Invalid token");
     }
-  })
-}
+};
 
 export default authenticate;

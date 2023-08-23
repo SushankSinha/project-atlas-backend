@@ -1,9 +1,12 @@
 import express from 'express'
 const router = express.Router();
 import bcrypt from 'bcryptjs'
-import User from '../models/userSchema.js';
+import User from '../models/userSchema.js'
+import cookieParser from 'cookie-parser'
 import authenticate from '../middleware/authenticate.js';
-import secretToken from '../utils/secretToken.js'
+
+
+router.use(cookieParser())
 
 router.post('/register', async (req, res) => {
 
@@ -18,10 +21,10 @@ router.post('/register', async (req, res) => {
         const userExist = await User.findOne({email : email});
 
         if (userExist) {
-            return res.status(422).json({message : "Email already exists"})
+                res.status(422).json({error : "Email already exists"})
             } else if (password != cnfPassword){
                 
-               return res.status(422).json({error : "Password mismatch"})
+                res.status(422).json({error : "Password mismatch"})
             } else {
                 
             const userDetails = new User({name, email, type, password, cnfPassword});
@@ -46,7 +49,7 @@ router.post('/login', async (req, res, next) => {
         const { email , password} = req.body;
 
         if(!email || !password) {
-          return res.status(400).json({error : "Enter required data"})
+            res.status(400).json({error : "Enter required data"})
         }
 
         const loginDetails = await User.findOne({email : email});
@@ -56,9 +59,12 @@ router.post('/login', async (req, res, next) => {
         const isMatch = await bcrypt.compare(password, loginDetails.password);
 
         if(!isMatch){
-           return res.status(400).json({error : "Invalid Credentials"})
-        }     
-        const token = secretToken(loginDetails._id);
+            res.status(400).json({error : "Invalid Credentials"})
+        }
+
+        const token = loginDetails.generateAuthToken();
+        res.send(token);
+        
         res.cookie("token", token, {
           withCredentials: true,
           httpOnly: false,
@@ -74,13 +80,23 @@ router.post('/login', async (req, res, next) => {
 });
 
 
-router.post('/', authenticate);
-router.post('/dashboard', authenticate);
-router.post('/charts', authenticate);
-router.post('/logs', authenticate);
-router.post('/calendar', authenticate);
+router.get('/', authenticate, (req, res)=> {
+    res.send({message : "Login successful"})
+});
+router.get('/dashboard', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/charts', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/logs', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
+router.get('/calendar', authenticate, (req, res)=> {
+    res.send({message : "authorised"})
+});
 
-router.post('/logout', (req, res)=> {
+router.get('/logout', (req, res)=> {
     res.clearCookie('token', {path: '/login'})
     res.send("User Logged out")
 })
