@@ -3,7 +3,7 @@ const router = express.Router();
 import bcrypt from 'bcryptjs'
 import User from '../models/userSchema.js';
 import authenticate from '../middleware/authenticate.js';
-import secretToken from '../utils/secretToken.js'
+import {secretToken }from '../utils/secretToken.js'
 
 router.post('/register', async (req, res) => {
 
