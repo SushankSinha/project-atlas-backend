@@ -18,10 +18,10 @@ router.post('/register', async (req, res) => {
         const userExist = await User.findOne({email : email});
 
         if (userExist) {
-                res.status(422).json({error : "Email already exists"})
+            return res.status(422).json({message : "Email already exists"})
             } else if (password != cnfPassword){
                 
-                res.status(422).json({error : "Password mismatch"})
+               return res.status(422).json({error : "Password mismatch"})
             } else {
                 
             const userDetails = new User({name, email, type, password, cnfPassword});
@@ -46,7 +46,7 @@ router.post('/login', async (req, res, next) => {
         const { email , password} = req.body;
 
         if(!email || !password) {
-            res.status(400).json({error : "Enter required data"})
+          return res.status(400).json({error : "Enter required data"})
         }
 
         const loginDetails = await User.findOne({email : email});
@@ -56,7 +56,7 @@ router.post('/login', async (req, res, next) => {
         const isMatch = await bcrypt.compare(password, loginDetails.password);
 
         if(!isMatch){
-            res.status(400).json({error : "Invalid Credentials"})
+           return res.status(400).json({error : "Invalid Credentials"})
         }     
         const token = secretToken(loginDetails._id);
         res.cookie("token", token, {
