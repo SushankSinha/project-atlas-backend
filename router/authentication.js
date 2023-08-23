@@ -77,23 +77,23 @@ router.post('/login', async (req, res, next) => {
 });
 
 
-router.get('/', authenticate, (req, res)=> {
+router.post('/', authenticate, (req, res)=> {
     res.send({message : "Login successful"})
 });
-router.get('/dashboard', authenticate, (req, res)=> {
+router.post('/dashboard', authenticate, (req, res)=> {
     res.send({message : "authorised"})
 });
-router.get('/charts', authenticate, (req, res)=> {
+router.post('/charts', authenticate, (req, res)=> {
     res.send({message : "authorised"})
 });
-router.get('/logs', authenticate, (req, res)=> {
+router.post('/logs', authenticate, (req, res)=> {
     res.send({message : "authorised"})
 });
-router.get('/calendar', authenticate, (req, res)=> {
+router.post('/calendar', authenticate, (req, res)=> {
     res.send({message : "authorised"})
 });
 
-router.get('/logout', (req, res)=> {
+router.post('/logout', (req, res)=> {
     res.clearCookie('token', {path: '/login'})
     res.send("User Logged out")
 })

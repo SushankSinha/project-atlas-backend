@@ -3,8 +3,9 @@ import express from 'express'
 import auth from './router/authentication.js'
 import cors from 'cors';
 import calendarController from './calendar/calendarController.js'
-import task from './Task/task.js'
-import mongoose from 'mongoose'
+import task from './Task/task.js';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
@@ -19,7 +20,6 @@ mongoose.connect(dataBase, {useUnifiedTopology : true,
     console.log ("Mongoose connection started")
 }).catch((err)=> console.log("Mongoose connection refused", err))
 
-app.use(express.json());
 app.use(
     cors({
       origin: ["https://atlas-tool.netlify.app"],
@@ -27,6 +27,15 @@ app.use(
       credentials: true,
     })
   );
+
+  app.listen(PORT, () => {
+    console.log('server running at port no.', PORT)
+})
+
+
+app.use(cookieParser());
+app.use(express.json());
+
 app.use(auth);
 app.use(express.urlencoded({extended: true}));
 app.use(calendarController)
@@ -65,8 +74,4 @@ app.get('/logout', (req, res)=> {
     res.send("I'm logout!")
 });
 
-
-app.listen(PORT, () => {
-    console.log('server running at port no.', PORT)
-})
 
