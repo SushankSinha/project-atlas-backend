@@ -41,35 +41,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(calendarController)
 app.use(task)
 
-app.get('/',  (req, res)=> {
-    res.send('home')
-});
-app.get('/dashboard',  (req, res)=> {
-    res.send('dashboard')
-});
-app.get('/charts',  (req, res)=> {
-    res.send('charts')
-});
-app.get('/logs',  (req, res)=> {
-    res.send('logs')
-});
-app.get('/calendar', (req, res)=> {
-    res.send('calendar')
-});
 
-app.get('/task', (req, res)=> {
-    res.send("I'm task!")
-});
-
-app.get('/login', (req, res)=> {
-    res.send("I am Login")
-});
-app.get('/register', (req, res)=> {
-    res.send("I'm register!")
-});
-
-app.get('/logout', (req, res)=> {
-    res.send("I'm logout!")
-});
 
 
