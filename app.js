@@ -5,7 +5,7 @@ import cors from 'cors';
 import calendarController from './calendar/calendarController.js'
 import task from './Task/task.js';
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -41,21 +41,20 @@ app.use(express.urlencoded({extended: true}));
 app.use(calendarController)
 app.use(task)
 
-app.get('/', (req, res)=> {
-    res.send("I'm home!")
+app.get('/',  (req, res)=> {
+    res.send('home')
 });
-
+app.get('/dashboard',  (req, res)=> {
+    res.send('dashboard')
+});
+app.get('/charts',  (req, res)=> {
+    res.send('charts')
+});
+app.get('/logs',  (req, res)=> {
+    res.send('logs')
+});
 app.get('/calendar', (req, res)=> {
-    res.send("I'm calendar!")
-});
-app.get('/charts', (req, res)=> {
-    res.send("I'm charts!")
-});
-app.get('/logs', (req, res)=> {
-    res.send("I'm logs!")
-});
-app.get('/dashboard', (req, res)=> {
-    res.send("I'm dashboard!")
+    res.send('calendar')
 });
 
 app.get('/task', (req, res)=> {
@@ -64,7 +63,6 @@ app.get('/task', (req, res)=> {
 
 app.get('/login', (req, res)=> {
     res.send("I am Login")
-    res.set('Allow-Control-Allow-Origin', 'https://atlas-tool.netlify.app')
 });
 app.get('/register', (req, res)=> {
     res.send("I'm register!")

@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import User from '../models/userSchema.js'
 import cookieParser from 'cookie-parser'
 import authenticate from '../middleware/authenticate.js';
-
+import jwt from 'jsonwebtoken';
 
 router.use(cookieParser())
 
@@ -42,7 +42,7 @@ router.post('/register', async (req, res) => {
 
 // login route
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', async (req, res) => {
     
     try{
 
@@ -60,18 +60,15 @@ router.post('/login', async (req, res, next) => {
 
         if(!isMatch){
             res.status(400).json({error : "Invalid Credentials"})
+        }else {
+        const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY);
+        console.log(token)
+        res.send({ message: "Successfully Logged In", token : token });
+            
         }
-
-        const token = loginDetails.generateAuthToken();
-        res.send(token);
-        
-        res.cookie("token", token, {
-          withCredentials: true,
-          httpOnly: false,
-        });
-        res.status(201).json({ message: "User logged in successfully", success: true });
-        next();
-    }
+        } else {
+            res.status(400).json({error : "Invalid Credentials"})
+        }
 
     } catch (err){
         console.log(err)
