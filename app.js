@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-dotenv.config({path : './.env'}); //need to declare only once
+dotenv.config({path : './.env'}); 
 
 const PORT = process.env.PORT;
 
