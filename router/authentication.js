@@ -94,7 +94,7 @@ const authenticate = (req, res, next) => {
 
 
 router.get('/', authenticate, (req, res)=> {
-    res.send({message : "Login successful"})
+    res.status(200).json({ message: 'Login Successful' });
 });
 router.get('/dashboard', authenticate, (req, res)=> {
     res.status(200).json({ message: 'Welcome to Dashboard' });
