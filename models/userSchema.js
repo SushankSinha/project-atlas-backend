@@ -11,15 +11,7 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    type : {
-        type : String,
-        required : true
-    },
     password : {
-        type : String,
-        required : true
-    },
-    cnfPassword : {
         type : String,
         required : true
     }, tokens : [
