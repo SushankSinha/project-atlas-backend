@@ -21,9 +21,6 @@ router.post('/register', async (req, res) => {
 
         if (userExist) {
                 res.status(422).json({error : "Email already exists"})
-            } else if (password != cnfPassword){
-                
-                res.status(422).json({error : "Password mismatch"})
             } else {
                 
             const userDetails = new User({name, email, password});
