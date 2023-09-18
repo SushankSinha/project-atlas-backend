@@ -11,10 +11,6 @@ router.post('/register', async (req, res) => {
 
     const {name, email, password} = req.body;
 
-    if(!name || !email || !password){
-        res.status(422).json({error : "Fill the required fields"})
-    }
-
     try {
 
         const userExist = await User.findOne({email : email});
@@ -43,10 +39,6 @@ router.post('/login', async (req, res) => {
     try{
 
         const { email , password} = req.body;
-
-        if(!email || !password) {
-            res.status(400).json({error : "Enter required data"})
-        }
 
         const loginDetails = await User.findOne({email : email});
 
