@@ -69,12 +69,12 @@ router.post('/login', async (req, res) => {
 const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-      return res.redirect('/login');
+      return res.redirect('https://atlas-tool.netlify.app/login');
     }
   
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        return res.redirect('/login');
+        return res.redirect('https://atlas-tool.netlify.app/login');
       }
       req.user = decoded;
       next();
