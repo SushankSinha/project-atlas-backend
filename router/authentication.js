@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
         if(!isMatch){
             res.status(400).json({error : "Invalid Credentials"})
         }else {
-        const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
         console.log(token);
         res.cookie('token', token, { httpOnly: true });
 
@@ -69,12 +69,12 @@ router.post('/login', async (req, res) => {
 const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-      return res.redirect('/login');
+      res.redirect('/login');
     }
   
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        return res.redirect('/login');
+        res.redirect('/login');
       }
       req.user = decoded;
       next();
