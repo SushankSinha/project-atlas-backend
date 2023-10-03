@@ -76,7 +76,7 @@ export const authenticate = (req, res, next) => {
       if (err) {
         res.send({message:'Unauthorized'});
       }
-      req.user = decoded;
+      req.user = decoded.user;
       next();
     });
   };
