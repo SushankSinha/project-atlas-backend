@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
         console.log(token);
         res.cookie('token', token, { httpOnly: true });
 
-        res.send({ message: "Successfully Logged In", token : token });
+        res.status(200).json({ message: "Successfully Logged In", token : token });
             
         }
         } else {
