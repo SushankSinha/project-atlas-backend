@@ -69,12 +69,12 @@ router.post('/login', async (req, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-      res.status(404).json({message:'Unauthorized'});
+      res.send({message:'Unauthorized'});
     }
   
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        res.status(404).json({message:'Unauthorized'});
+        res.send({message:'Unauthorized'});
       }
       req.user = decoded;
       next();
