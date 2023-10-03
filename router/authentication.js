@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userSchema.js';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
-import authenticate from './auth.js';
 
 router.use(cookieParser());
 
@@ -67,8 +66,24 @@ router.post('/login', async (req, res) => {
     
 });
 
+export const authenticate = (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+      res.redirect('/login');
+    }
+  
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) {
+        res.redirect('/login');
+      }
+      req.user = decoded;
+      next();
+    });
+  };
+
+
 router.get('/', authenticate, (req, res)=> {
-    res.status(200).json({ message: 'Login Successful' });
+    res.status(200).json({ message: 'Welcome to HomePage' });
 });
 router.get('/dashboard', authenticate, (req, res)=> {
     res.status(200).json({ message: 'Welcome to Dashboard' });
