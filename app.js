@@ -5,7 +5,6 @@ import cors from 'cors';
 import calendarController from './calendar/calendarController.js'
 import task from './Task/task.js';
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -32,8 +31,6 @@ app.use(
     console.log('server running at port no.', PORT)
 })
 
-
-app.use(cookieParser());
 app.use(express.json());
 
 app.use(auth);
