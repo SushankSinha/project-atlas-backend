@@ -1,6 +1,6 @@
 import express from 'express'
 import Task from './taskSchema.js';
-import {authenticate} from './router/authentication.js'
+import authenticate from '../router/auth.js'
 
 const router = express.Router();
 
