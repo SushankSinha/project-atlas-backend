@@ -7,10 +7,6 @@ import jwt from 'jsonwebtoken';
 
 router.use(cookieParser());
 
-router.get('/login', (req, res) => {
-    res.status(200).json({ message: 'Welcome to Login Page' });
-  });
-
 router.post('/register', async (req, res) => {
 
     const {name, email, password} = req.body;
@@ -73,12 +69,12 @@ router.post('/login', async (req, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        res.redirect('/login');
+        return res.status(401).json({ message: 'Authentication required' });
     }
   
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        res.redirect('/login');
+        return res.status(401).json({ message: 'Invalid token' });
       }
       req.user = decoded.user;
       next();
