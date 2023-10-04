@@ -69,12 +69,12 @@ router.post('/login', async (req, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ message: 'Authentication required' });
+        res.redirect('/login');
     }
   
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        return res.status(401).json({ message: 'Invalid token' });
+        res.redirect('/login');
       }
       req.user = decoded.user;
       next();
