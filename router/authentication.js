@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken';
 
 router.use(cookieParser());
 
+router.get('/login', (req, res) => {
+    res.status(200).json({ message: 'Welcome to Login Page' });
+  });
+
 router.post('/register', async (req, res) => {
 
     const {name, email, password} = req.body;
