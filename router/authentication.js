@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
         }else {
         const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
         console.log(token);
-        res.cookie('token', token, { httpOnly: true, path: '/' });
+        res.cookie('token', token, { httpOnly: true, path: '/', secure : true, sameSite : 'none', domain : '.netlify.app' });
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
             
