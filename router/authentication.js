@@ -76,7 +76,7 @@ export const authenticate = (req, res, next) => {
         if (err) {
             return res.json({ status: false })
            } else {
-             const user = await User.findById(data.id)
+             const user = await User.findOne({_id : data.id})
              if (user) return res.json({ status: true, user: user._id })
              else return res.json({ status: false })
            }
