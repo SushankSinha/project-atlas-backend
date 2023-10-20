@@ -34,8 +34,8 @@ app.use(
 
 app.use(express.json());
 // app.use(cookieParser());
-app.use(auth);
 app.use(express.urlencoded({extended: true}));
+app.use(auth);
 app.use(calendarController)
 app.use(task)
 
