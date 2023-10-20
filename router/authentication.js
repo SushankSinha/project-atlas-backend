@@ -52,7 +52,6 @@ router.post('/login', async (req, res) => {
             withCredentials: true,
             secure : true
           });
-          set-cook
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
             
