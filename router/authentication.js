@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
 
         res.cookie("token", token, {
             withCredentials: true,
-            httpOnly: true,
+            httpOnly: false,
           });
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
@@ -69,7 +69,8 @@ router.post('/login', async (req, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ message: 'Authentication required' });
+        res.status(401).json({ message: 'Authentication required' });
+        res.redirect('/login')
     }
   
     jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
