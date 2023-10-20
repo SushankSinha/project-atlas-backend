@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userSchema.js';
 import jwt from 'jsonwebtoken';
 
-;
-
 router.post('/register', async (req, res) => {
 
     const {name, email, password} = req.body;
@@ -49,8 +47,11 @@ router.post('/login', async (req, res) => {
             res.status(400).json({error : "Invalid Credentials"})
         }else {
         const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
-        console.log(token);
-        res.cookie('token', token, { httpOnly: true, path: '/', secure : true, sameSite : 'none', domain : '.netlify.app' });
+
+        res.cookie("token", token, {
+            withCredentials: true,
+            httpOnly: true,
+          });
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
             
@@ -71,19 +72,32 @@ export const authenticate = (req, res, next) => {
         return res.status(401).json({ message: 'Authentication required' });
     }
   
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
+
       if (err) {
         return res.status(401).json({ message: 'Invalid token' });
       }
-      req.user = decoded.user;
-      next();
+      await User.findById(data.id)
     });
+    next();
   };
-
 
 router.get('/', authenticate, (req, res)=> {
     res.status(200).json({ message: 'Welcome to HomePage' });
 });
+
+router.get('/user/:id', authenticate, async(req, res)=> {
+    const id = req.params.id
+    try{
+    const user = await User.findOne({_id : id});
+    if(user){
+        res.status(200).json({user})
+    }
+    }catch(err){
+        console.log(err)
+    }
+});
+
 router.get('/dashboard', authenticate, (req, res)=> {
     res.status(200).json({ message: 'Welcome to Dashboard' });
 });
@@ -99,8 +113,7 @@ router.get('/calendar', authenticate, (req, res)=> {
 
 router.get('/logout', (req, res) => {
     res.clearCookie('token');
-    res.status(200).json({ message: 'Logged Out Successfully' });
-    res.redirect('/login');
+    res.send('Logged Out Successfully');
   });
 
 export default router;
