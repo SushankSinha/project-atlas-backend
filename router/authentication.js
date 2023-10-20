@@ -69,8 +69,7 @@ router.post('/login', async (req, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        res.status(401).json({ message: 'Authentication required' });
-        res.redirect('/login')
+        return res.status(401).json({ message: 'Authentication required' });
     }
   
     jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
