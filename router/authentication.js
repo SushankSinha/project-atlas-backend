@@ -3,6 +3,9 @@ const router = express.Router();
 import bcrypt from 'bcryptjs';
 import User from '../models/userSchema.js';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
+
+router.use(cookieParser())
 
 router.post('/register', async (req, res) => {
 
