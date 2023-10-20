@@ -5,7 +5,7 @@ import cors from 'cors';
 import calendarController from './calendar/calendarController.js'
 import task from './Task/task.js';
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
+// import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.use(
 })
 
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(auth);
 app.use(express.urlencoded({extended: true}));
 app.use(calendarController)
