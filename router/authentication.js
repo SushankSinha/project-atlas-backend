@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
             res.status(400).json({error : "Invalid Credentials"})
         }else {
         const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
-            console.log(token)
+            console.log("res-cookie",token)
         res.cookie("token", token, {
             withCredentials: true,
             secure : true,
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
 
 export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
-    console.log(token)
+    console.log("req-cookie", token)
     if (!token) {
         return res.status(401).json({ message: 'Authentication required'});
     }
@@ -79,7 +79,8 @@ export const authenticate = (req, res, next) => {
             return res.json({ status: false })
            } else {
              const user = await User.findOne({_id : data.id})
-             if (user) return res.json({ status: true, user: user._id })
+             console.log("User Data", user)
+             if (user) return res.json({ status: true, token: user._id })
              else return res.json({ status: false })
            }
     });
