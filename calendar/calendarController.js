@@ -1,9 +1,10 @@
 import express from 'express';
 import Event from './Event.js';
+import { authenticate } from '../router/authentication.js';
 
 const router = express.Router();
 
-router.get('/calendar', async (req, res) => {
+router.get('/calendar', authenticate, async (req, res) => {
 
     try {
       const event = await Event.find();
@@ -13,7 +14,7 @@ router.get('/calendar', async (req, res) => {
     }
   });
 
-    router.get('/calendar/:id', async (req, res) => {
+    router.get('/calendar/:id', authenticate, async (req, res) => {
     const id  = req.params.id;
   
     try {
@@ -24,13 +25,13 @@ router.get('/calendar', async (req, res) => {
     }
   });
 
-router.post('/calendar/add-event', async(req, res)=>{
+router.post('/calendar/add-event', authenticate, async(req, res)=>{
     const event = Event(req.body)
     await event.save();
     res.send({message: 'Event Created'});
 })
 
-router.put('/calendar/edit-event/:id', async (req, res) => {
+router.put('/calendar/edit-event/:id', authenticate, async (req, res) => {
 
     const id = req.params.id;
 
@@ -51,7 +52,7 @@ router.put('/calendar/edit-event/:id', async (req, res) => {
       }
   });
 
-  router.delete('/calendar/delete/:id', async (req, res) => {
+  router.delete('/calendar/delete/:id', authenticate, async (req, res) => {
     const id  = req.params.id;
   
     try {
