@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
             withCredentials: true,
             secure : true,
             httpOnly : true
-          }).send()
+          });
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
             
