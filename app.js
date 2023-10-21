@@ -9,6 +9,8 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
+app.use(cookieParser());
+
 dotenv.config({path : './.env'}); 
 
 const PORT = process.env.PORT;
@@ -28,16 +30,15 @@ app.use(
     })
   );
 
-  app.listen(PORT, () => {
-    console.log('server running at port no.', PORT)
-})
-
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(auth);
 app.use(calendarController)
-app.use(task)
+app.use(task);
+
+app.listen(PORT, () => {
+  console.log('server running at port no.', PORT)
+})
 
 
 
