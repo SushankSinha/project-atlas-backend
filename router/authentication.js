@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             withCredentials: true,
             secure : true,
             httpOnly : true,
-            domain : '.atlas-tool-server.onrender.com'
+            domain : '.netlify.app'
           });
 
         res.status(200).json({ message: "Successfully Logged In", token : token });
