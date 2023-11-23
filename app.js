@@ -24,7 +24,7 @@ mongoose.connect(dataBase, {useUnifiedTopology : true,
 
 app.use(
     cors({
-      origin: ["https://atlas-tool.netlify.app/"],
+      origin: ["https://atlas-tool.netlify.app"],
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     })
