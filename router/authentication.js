@@ -47,14 +47,12 @@ router.post('/login', async (req, res) => {
             res.status(400).json({error : "Invalid Credentials"})
         }else {
         const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
-            console.log("res-cookie",token)
         res.cookie("token", token, {
             withCredentials: true,
-            secure : true,
-            httpOnly : true
+            secure : true
           });
 
-        res.status(200).json({ message: "Successfully Logged In", token : token });
+        res.status(200).json({ message: "Successfully Logged In", token : token, user : loginDetails._id });
             
         }
         } else {
@@ -67,31 +65,36 @@ router.post('/login', async (req, res) => {
     
 });
 
-export const authenticate = (req, res, next) => {
-    const token = req.cookies.token;
-    console.log("req-cookie", token)
-    if (!token) {
-        return res.status(401).json({ message: 'Authentication required'});
-    }
+router.put("/reset_password/new_password", async (req, res) => {
   
-    jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
-        if (err) {
-            return res.json({ status: false })
-           } else {
-             const user = await User.findOne({_id : data.id})
-             console.log("User Data", user)
-             if (user) return res.json({ status: true, token: user._id })
-             else return res.json({ status: false })
-           }
-    });
-    next();
-  };
+    const { email, password } = req.body;
 
-router.get('/', authenticate, (req, res)=> {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      res.status(400).json({ message: "User does not exists" });
+    } else {
+      try {
+    const hash = await bcrypt.hash(password, 12);
+
+    const auth = await User.findByIdAndUpdate(
+      { _id: user.id },
+      { $set: { password: hash } },
+      { new: true }
+    );
+    if (auth) {
+      res.status(201).json({ message: "Password updated successfully", success: true });
+    }
+   } catch (error) {
+    console.error(error);
+    }
+  }
+});
+
+router.get('/', (req, res)=> {
     res.status(200).json({ message: 'Welcome to HomePage' });
 });
 
-router.get('/user/:id', authenticate, async(req, res)=> {
+router.get('/user/:id', async(req, res)=> {
     const id = req.params.id
     try{
     const user = await User.findOne({_id : id});
@@ -103,22 +106,22 @@ router.get('/user/:id', authenticate, async(req, res)=> {
     }
 });
 
-router.get('/dashboard', authenticate, (req, res)=> {
+router.get('/dashboard', (req, res)=> {
     res.status(200).json({ message: 'Welcome to Dashboard' });
 });
-router.get('/charts', authenticate, (req, res)=> {
+router.get('/charts', (req, res)=> {
     res.status(200).json({ message: 'Welcome to charts' });
 });
-router.get('/logs', authenticate, (req, res)=> {
+router.get('/logs',  (req, res)=> {
     res.status(200).json({ message: 'Welcome to logs' });
 });
-router.get('/calendar', authenticate, (req, res)=> {
+router.get('/calendar',  (req, res)=> {
     res.status(200).json({ message: 'Welcome to calendar' });
 });
 
 router.get('/logout', (req, res) => {
     res.clearCookie('token');
-    res.send('Logged Out Successfully');
+    res.status(200).json({ message: 'Logged Out Successfully'});
   });
 
 export default router;

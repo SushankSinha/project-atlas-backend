@@ -1,11 +1,11 @@
 import express from 'express'
 import Task from './taskSchema.js';
-import { authenticate } from '../router/authentication.js';
+// import { } from '../router/authentication.js';
 const router = express.Router();
 
 // Route to get all Tasks
 
-router.get('/task', authenticate, async (req, res) => {
+router.get('/task',  async (req, res) => {
 
   try {
     const task = await Task.find();
@@ -17,7 +17,7 @@ router.get('/task', authenticate, async (req, res) => {
 
 // Route to get one Task
 
-router.get('/task/:id', authenticate, async (req, res) => {
+router.get('/task/:id',  async (req, res) => {
   const id = req.params.id;
   try {
     const task = await Task.findOne({_id:id});
@@ -29,7 +29,7 @@ router.get('/task/:id', authenticate, async (req, res) => {
 
 // Route to add a new Task
 
-router.post('/task/add-task', authenticate, async (req, res) => {
+router.post('/task/add-task',  async (req, res) => {
 
   const {title, content, user, status, completion} = req.body;
 
@@ -51,7 +51,7 @@ router.post('/task/add-task', authenticate, async (req, res) => {
 }
 });
 
-router.put('/task/edit/:id', authenticate, async (req, res) => {
+router.put('/task/edit/:id',  async (req, res) => {
 
   const id = req.params.id;
 
@@ -68,7 +68,7 @@ router.put('/task/edit/:id', authenticate, async (req, res) => {
     }
 });
 
-router.delete('/task/delete/:id', authenticate, async (req, res) => {
+router.delete('/task/delete/:id',  async (req, res) => {
   const id  = req.params.id;
 
   try {
