@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 router.post('/register', async (req, res) => {
 
-    const {name, email, password} = req.body;
+    const {name, email, role, password} = req.body;
 
     try {
 
@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
                 res.status(422).json({error : "Email already exists"})
             } else {
                 
-            const userDetails = new User({name, email, password});
+            const userDetails = new User({name, email, role, password});
 
             await userDetails.save();            
             
@@ -48,8 +48,8 @@ router.post('/login', async (req, res) => {
         }else {
         const token = jwt.sign({id: loginDetails._id}, process.env.SECRET_KEY, { expiresIn: '24h' });
         res.cookie("token", token, {
-            withCredentials: true,
-            secure : true
+            // withCredentials: true,
+            // secure : true
           });
 
         res.status(200).json({ message: "Successfully Logged In", token : token, user : loginDetails._id });
@@ -90,16 +90,31 @@ router.put("/reset_password/new_password", async (req, res) => {
   }
 });
 
+router.get('/user/developer', async(req, res)=> {
+    try{
+    const developer = await User.aggregate([{
+        $match : {
+            role : 'developer'
+        }
+    }]);
+    if(developer){
+        res.send(developer);
+    }
+    }catch(err){
+        console.log(err)
+    }
+});
+
 router.get('/', (req, res)=> {
     res.status(200).json({ message: 'Welcome to HomePage' });
 });
 
 router.get('/user/:id', async(req, res)=> {
-    const id = req.params.id
     try{
+        const id = req.params.id;
     const user = await User.findOne({_id : id});
     if(user){
-        res.status(200).json({user})
+        res.send(user);
     }
     }catch(err){
         console.log(err)

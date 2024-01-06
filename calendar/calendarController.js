@@ -1,34 +1,26 @@
 import express from 'express';
 import Event from './Event.js';
-// import { } from '../router/authentication.js';
+import moment from "moment";
 
 const router = express.Router();
 
-router.get('/calendar',  async (req, res) => {
+router.get('/calendar/events',  async (req, res) => {
 
     try {
-      const event = await Event.find();
-      res.send(event);
+      const event = await Event.find({
+        start : {$gte : moment(req.query.start).toDate()},
+        end : {$lte : moment(req.query.end).toDate()},
+      });
+        res.send(event);
     } catch (error) {
       res.status(500).json({ message: 'Error retrieving Events' });
-    }
-  });
-
-    router.get('/calendar/:id',  async (req, res) => {
-    const id  = req.params.id;
-  
-    try {
-      const event = await Event.findOne({_id:id})
-      res.send(event);
-    } catch (error) {
-      res.status(500).json({ message: 'Event Not Found', error });
     }
   });
 
 router.post('/calendar/add-event',  async(req, res)=>{
     const event = Event(req.body)
     await event.save();
-    res.send({message: 'Event Created'});
+    res.sendStatus(201);
 })
 
 router.put('/calendar/edit-event/:id',  async (req, res) => {
